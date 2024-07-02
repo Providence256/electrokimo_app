@@ -128,6 +128,7 @@ class PaiementScreen extends StatelessWidget {
                         const SizedBox(width: 15),
                         Expanded(
                           child: TextFormField(
+                            controller: controller.tauxController,
                             readOnly: true,
                             decoration: const InputDecoration(
                               labelText: "Taux de Change",

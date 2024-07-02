@@ -1,6 +1,7 @@
 import 'package:electrokimo/common/widgets/app_bar.dart';
 import 'package:electrokimo/features/home/controller/reclamation_controller.dart';
 import 'package:electrokimo/features/home/screen/reclamation.dart';
+import 'package:electrokimo/features/paiement/screens/pas_facture.dart';
 import 'package:electrokimo/size_config.dart';
 import 'package:electrokimo/utils/formatters/formatters.dart';
 import 'package:flutter/material.dart';
@@ -32,63 +33,69 @@ class ListeReclamation extends StatelessWidget {
             children: [
               Obx(() {
                 final reclamations = controller.reclamations['data'];
-                return reclamations == null
-                    ? const Center(
-                        child: Padding(
-                        padding: EdgeInsets.only(top: 8.0),
-                        child: CircularProgressIndicator(),
-                      ))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: reclamations.length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (_, index) => Column(
-                          children: [
-                            ListTile(
-                              leading: const Icon(
-                                Icons.edit_document,
-                                color: Colors.blue,
-                              ),
-                              title: Text(
-                                reclamations[index]['docReference'],
-                              ),
-                              subtitle: Text(
-                                reclamations[index]['motif'],
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              trailing: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(reclamations[index]['dateSaisieRecl']),
-                                  Container(
-                                    height: getProportionateScreenHeight(18),
-                                    width: getProportionateScreenWidth(77),
-                                    decoration: BoxDecoration(
-                                      color: reclamations[index]['etatRecl']
-                                          ? Colors.green[300]
-                                          : Colors.red,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        Formatter.reclamationStatus(
-                                            reclamations[index]['etatRecl']),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall!
-                                            .apply(color: Colors.white),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            const Divider(thickness: 1),
-                          ],
+                if (controller.isLoading.value) {
+                  return const Center(
+                      child: Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: CircularProgressIndicator(),
+                  ));
+                } else if (reclamations == null) {
+                  return const PasFactureScreen(
+                    image: "assets/images/claim.png",
+                    text: "Aucune réclamation disponible",
+                  );
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: reclamations.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, index) => Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(
+                            Icons.edit_document,
+                            color: Colors.blue,
+                          ),
+                          title: Text(
+                            reclamations[index]['docReference'],
+                          ),
+                          subtitle: Text(
+                            reclamations[index]['motif'],
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(reclamations[index]['dateSaisieRecl']),
+                              Container(
+                                height: getProportionateScreenHeight(18),
+                                width: getProportionateScreenWidth(77),
+                                decoration: BoxDecoration(
+                                  color: reclamations[index]['etatRecl']
+                                      ? Colors.green[300]
+                                      : Colors.red,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    Formatter.reclamationStatus(
+                                        reclamations[index]['etatRecl']),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall!
+                                        .apply(color: Colors.white),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      );
+                        const Divider(thickness: 1),
+                      ],
+                    ),
+                  );
+                }
               }),
             ],
           ),

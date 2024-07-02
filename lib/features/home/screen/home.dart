@@ -56,10 +56,14 @@ class HomeScreen extends StatelessWidget {
                     height: getProportionateScreenHeight(30),
                     width: getProportionateScreenWidth(110),
                     decoration: BoxDecoration(
-                      color: Colors.green.shade100,
+                      color: controller.userData.status == "SUSPENDED"
+                          ? Colors.red.shade100
+                          : Colors.green.shade100,
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
-                        color: const Color.fromARGB(255, 62, 230, 67),
+                        color: controller.userData.status == "SUSPENDED"
+                            ? Colors.red
+                            : const Color.fromARGB(255, 62, 230, 67),
                       ),
                     ),
                     child: Row(
@@ -71,7 +75,9 @@ class HomeScreen extends StatelessWidget {
                               EdgeInsets.all(getProportionateScreenWidth(10)),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
-                            color: Colors.green,
+                            color: controller.userData.status == "SUSPENDED"
+                                ? Colors.red
+                                : Colors.green,
                           ),
                         ),
                         Text(

@@ -33,7 +33,6 @@ class TValidators {
 
   static String? validateCodeCountry(String? fieldName, String? value) {
     final code = value?.substring(0, 4);
-    print(code);
     if (code != "+243") {
       return "Utiliser uniquement le code de la RDCongo";
     }

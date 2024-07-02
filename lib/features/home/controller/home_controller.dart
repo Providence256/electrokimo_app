@@ -16,6 +16,7 @@ class HomeController extends GetxController {
   var userName = ''.obs;
   var email = ''.obs;
   var periode = ''.obs;
+  var tauxChange = ''.obs;
   final factureRappel = {}.obs;
   final lastFacture = {}.obs;
   final facParams = {}.obs;
@@ -36,7 +37,7 @@ class HomeController extends GetxController {
     super.onInit();
 
     loadUserInfo();
-    loadFacParam();
+    // loadFacParam();
     loadFactureRappel();
     loadLastFacture();
     loadFacturePayee();
@@ -52,10 +53,12 @@ class HomeController extends GetxController {
         "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
   }
 
-  Future<void> loadFacParam() async {
-    final facParamData = await FactureRepository.instance.getActivePeriode();
-    facParams.value = facParamData['data'][0];
-  }
+  // Future<Map<String, dynamic>> loadFacParam() async {
+  //   final facParamData = await FactureRepository.instance.getActivePeriode();
+  //   final facParamInstance = facParamData['data'][0];
+  //     facParams.value = facParamInstance;
+  //   return facParams;
+  // }
 
   Future<void> loadLastFacture() async {
     try {
@@ -64,6 +67,9 @@ class HomeController extends GetxController {
       if (!isConnected) {
         return;
       }
+      final facParamData = await FactureRepository.instance.getActivePeriode();
+      final periodeData = facParamData['data'][0]['periode'];
+      periode.value = periodeData;
 
       final lastFactureData = await FactureRepository.instance.getLastFacture(
         clientId: userData.id,
@@ -96,9 +102,6 @@ class HomeController extends GetxController {
       }
       final facturedata = await FactureRepository.instance
           .getFactureRappel(raccordementId: userData.id.toString());
-
-      // facturedata.removeWhere(
-      //     (key, value) => value['data']['detailItems']['montant'] == 0);
 
       factureRappel.value = facturedata;
     } catch (e) {

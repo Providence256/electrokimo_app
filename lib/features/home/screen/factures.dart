@@ -102,7 +102,12 @@ class FacturesScreen extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!
-                              .apply(color: Colors.red),
+                              .apply(
+                                color: controller.selectedFactureType.value ==
+                                        "Factures non Payées"
+                                    ? Colors.red
+                                    : Colors.green,
+                              ),
                         ),
                         trailing: Column(
                           children: [

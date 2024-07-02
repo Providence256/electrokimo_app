@@ -7,10 +7,13 @@ class PaiementController extends GetxController {
   final factureController = HomeController.instance;
 
   late TextEditingController montantAPayer = TextEditingController();
+  late TextEditingController tauxController = TextEditingController();
+
   final distributedAmounts = <int, double>{}.obs;
   RxList selectedFactures = [].obs;
   final Rx<String> montantTotal = ''.obs;
   final Rx<String> codeDevise = ''.obs;
+  final Rx<String> tauxChange = ''.obs;
   late double montantTotalValue;
   final isMontantPayerNotEmpty = false.obs;
 
@@ -19,6 +22,7 @@ class PaiementController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     final data = factureController.factureRappel['data'];
     if (data != null) {
       final devise = data['devideCode'];
@@ -34,6 +38,9 @@ class PaiementController extends GetxController {
             (double.tryParse(montantAPayer.text) ?? 0) > 0;
       });
     }
+    // print(factureController.loadFacParam());
+    tauxController =
+        TextEditingController(text: factureController.tauxChange.value);
   }
 
   void toggleIndex(Map<String, dynamic> data) {

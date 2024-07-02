@@ -15,6 +15,7 @@ class ReclamationController extends GetxController {
   final RxString fileName = ''.obs;
   final userData = VerificationController.instance.getUserData;
   final reclamations = {}.obs;
+  final isLoading = false.obs;
 
   final dateController = TextEditingController();
   final numDocumentController = TextEditingController();
@@ -70,6 +71,7 @@ class ReclamationController extends GetxController {
   }
 
   Future<void> getReclammations() async {
+    isLoading.value = true;
     try {
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
@@ -93,6 +95,8 @@ class ReclamationController extends GetxController {
         ),
         duration: const Duration(seconds: 3),
       );
+    } finally {
+      isLoading.value = false;
     }
   }
 
